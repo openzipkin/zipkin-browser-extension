@@ -8,7 +8,7 @@ TODO: This extension will later be submitted to Chrome Web Store, where it will 
 
 ## Usage
 
-
+Check out the [Usage documentation](https://github.com/openzipkin/zipkin-chrome-extension/blob/master/docs/README.md).
 
 ## Developing
 
