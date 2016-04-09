@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+  "name": "Zipkin Chrome Extension",
+  "description": "Lets you trigger Zipkin traces from the browser, while using your application",
+  "version": "1.0",
+  "devtools_page": "devtools.html",
+  "background": {
+    "scripts": ["dist/background.bundle.js"],
+    "persistent": true
+  },
+  "permissions": [
+    "activeTab",
+    "webRequest",
+    "webRequestBlocking",
+    "storage",
+    "http://*/",
+    "https://*/"
+  ]
+}
