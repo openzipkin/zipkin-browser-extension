@@ -3,7 +3,7 @@ import makeRequest from './request';
 
 const random = new Random();
 function generateZipkinTraceId() {
-  return random.hex(32);
+  return random.hex(16);
 }
 
 const filter = {
@@ -14,6 +14,9 @@ chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
   const traceId = generateZipkinTraceId();
   const zipkinHeaders = {
     'X-Zipkin-Extension': '1',
+    // This flag means instrumentation shouldn't throw away this trace
+    'X-B3-Sampled': '1',
+    // This flag means the collection tier shouldn't throw away this trace
     'X-B3-Flags': '1',
     'X-B3-TraceId': traceId,
     'X-B3-SpanId': traceId
