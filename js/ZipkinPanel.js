@@ -1,9 +1,8 @@
-import React, {Component, PropTypes} from 'react';
-import {render} from 'react-dom';
+import React, {Component} from 'react';
 import minimatch from 'minimatch';
-import ZipkinUI from './zipkinUI';
+import ZipkinUI from './ZipkinUI';
 
-class ZipkinPanel extends Component {
+export default class ZipkinPanel extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,41 +12,42 @@ class ZipkinPanel extends Component {
   }
 
   componentDidMount() {
-    chrome.devtools.network.onNavigated.addListener(() => {
-      this.setState({requests: []});
-    });
+    this.props.pubsub.sub('zipkinUrls.status', this.handleZipkinUrlsChange.bind(this));
+    this.props.pubsub.sub('navigated', () => this.setState({requests: []}));
+    this.props.pubsub.sub('requestFinished', this.handleRequestFinished.bind(this));
+  }
 
-    chrome.devtools.network.onRequestFinished.addListener(request => {
-      // alert(JSON.stringify(request.request));
-      const [traceId] = request.request.headers.filter(h => h.name === 'X-B3-TraceId');
 
-      if (traceId) {
-        this.setState({
-          requests: [...this.state.requests, {
-            traceId: traceId.value,
-            url: request.request.url
-          }]
-        });
-      }
-    });
+  handleRequestFinished(request) {
+    const [traceId] = request.headers.filter(h => h.name === 'X-B3-TraceId');
+    if (traceId) {
+      this.setState({
+        requests: [...this.state.requests, {
+          traceId: traceId.value,
+          url: request.url
+        }]
+      });
+    }
   }
 
   matches(url, matcher) {
-    console.log('checking for url '+url+' and matcher '+matcher);
-    const result = minimatch(url, matcher);
-    console.log('was it match?', result);
-    return result;
+    if (!this.matcherCache) {
+      this.matcherCache = {};
+    }
+    if (!this.matcherCache[matcher]) {
+      this.matcherCache[matcher] = new RegExp(matcher);
+    }
+    return this.matcherCache[matcher].test(url);
   }
 
   traceLink(traceId, requestUrl) {
-    console.log('matching traceID '+traceId + 'and requestUrl '+requestUrl+' for uis', this.state.zipkinUrls);
     const url = this.state.zipkinUrls.find(url =>
-      url.instrumented.find(matcher => this.matches(requestUrl, matcher)) != null
+      this.matches(requestUrl, url.instrumented)
     );
     if (url == null) {
       return null;
     } else {
-      return `${url.name}/traces/${encodeURIComponent(traceId)}`;
+      return `${url.url}/traces/${encodeURIComponent(traceId)}`;
     }
   }
 
@@ -64,7 +64,7 @@ class ZipkinPanel extends Component {
         <div className="row">
           <div className="col-md-12">
             <h2>Zipkin traces</h2>
-            <ZipkinUI onZipkinUrlsChange={this.handleZipkinUrlsChange.bind(this)} />
+            <ZipkinUI pubsub={this.props.pubsub} />
             <table>
               <thead>
               <tr>
@@ -89,5 +89,3 @@ class ZipkinPanel extends Component {
     );
   }
 }
-
-render(<ZipkinPanel />, document.getElementById('content'));
