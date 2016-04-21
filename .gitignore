@@ -1,2 +1,4 @@
 dist
 node_modules
+client-secret.txt
+refresh-token.txt

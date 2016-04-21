@@ -17,7 +17,9 @@
     "express": "^4.13.4",
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.8.5",
+    "google-auth-library": "^0.9.7",
     "jszip": "^2.6.0",
+    "node-fetch": "^1.5.1",
     "node-zip": "^1.1.1",
     "webpack": "^1.12.14"
   },
