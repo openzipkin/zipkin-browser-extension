@@ -26,6 +26,7 @@
     "gulp-rename": "^1.2.2",
     "gulp-shell": "^0.5.2",
     "gulp-zip": "^3.2.0",
+    "jpm": "^1.0.7",
     "jszip": "^2.6.0",
     "node-fetch": "^1.5.1",
     "node-zip": "^1.1.1",

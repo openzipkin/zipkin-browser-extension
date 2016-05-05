@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import minimatch from 'minimatch';
-import ZipkinUI from './ZipkinUI';
+import ZipkinUI from './zipkinUI';
 
 export default class ZipkinPanel extends Component {
   constructor(props) {
