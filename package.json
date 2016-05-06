@@ -1,10 +1,11 @@
 {
-  "name": "zipkin-chrome-extension",
-  "version": "1.0.0",
+  "name": "zipkin-browser-extension",
+  "version": "0.0.0",
   "description": "Lets you trigger Zipkin traces from the browser, while using your application",
   "scripts": {
-    "dev": "node node_modules/webpack/bin/webpack.js --watch",
-    "build": "node build.js"
+    "dev-chrome": "node node_modules/gulp/bin/gulp.js chrome",
+    "dev-firefox": "node node_modules/gulp/bin/gulp.js firefox",
+    "build": "node node_modules/gulp/bin/gulp.js"
   },
   "author": "OpenZipkin",
   "license": "Apache 2",
@@ -18,10 +19,19 @@
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.8.5",
     "google-auth-library": "^0.9.7",
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-cli": "^1.2.1",
+    "gulp-mustache": "^2.2.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-shell": "^0.5.2",
+    "gulp-zip": "^3.2.0",
+    "jpm": "^1.0.7",
     "jszip": "^2.6.0",
     "node-fetch": "^1.5.1",
     "node-zip": "^1.1.1",
-    "webpack": "^1.12.14"
+    "webpack": "^1.12.14",
+    "webpack-stream": "^3.1.0"
   },
   "dependencies": {
     "minimatch": "^3.0.0",

@@ -6,9 +6,11 @@ const express = require('express');
 const app = express();
 const port = 8080;
 
+app.set('json spaces', 2);
+
 app.get('/config.json', (req, res) => {
   res.json({
-    instrumented: ['*://example.com/**', '**']
+    instrumented: '\\/\\/example\\.com\\/'
   });
 });
 app.get('*', (req, res) => {
