@@ -19,7 +19,7 @@ export default class ZipkinPanel extends Component {
 
 
   handleRequestFinished(request) {
-    const [traceId] = request.headers.filter(h => h.name === 'X-B3-TraceId');
+    const [traceId] = request.headers.filter(h => h.name.toLowerCase() === 'x-b3-traceid');
     if (traceId) {
       this.setState({
         requests: [...this.state.requests, {
