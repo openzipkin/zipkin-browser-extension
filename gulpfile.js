@@ -1,5 +1,6 @@
 const fs = require('fs');
 const gulp = require('gulp');
+const mocha = require('gulp-mocha');
 const mustache = require("gulp-mustache");
 const clean = require('gulp-clean');
 const rename = require("gulp-rename");
@@ -12,6 +13,8 @@ const webpackFirefoxConfig = require('./webpack-firefox.config.js');
 const version = fs.readFileSync('VERSION', 'utf-8').trim();
 
 gulp.task('clean', () => gulp.src(['build', 'dist'], {read: false}).pipe(clean()));
+
+gulp.task('test:unit', () => gulp.src('test/*', {read: false}).pipe(mocha({})));
 
 // Chrome extension build
 gulp.task('chrome:webpack', () => gulp.src('vendor/chrome')
@@ -57,4 +60,4 @@ gulp.task('firefox:move-package', ['firefox:jpm-xpi'], () => gulp.src('build/fir
 gulp.task('firefox', ['firefox:move-package']);
 
 // Aggregate build
-gulp.task('default', ['chrome', 'firefox']);
+gulp.task('default', ['test:unit', 'chrome', 'firefox']);

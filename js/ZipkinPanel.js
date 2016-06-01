@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import minimatch from 'minimatch';
 import ZipkinUI from './zipkinUI';
+import matchUrl from './matchUrl';
 
 export default class ZipkinPanel extends Component {
   constructor(props) {
@@ -29,21 +30,9 @@ export default class ZipkinPanel extends Component {
       });
     }
   }
-
-  matches(url, matcher) {
-    if (!this.matcherCache) {
-      this.matcherCache = {};
-    }
-    if (!this.matcherCache[matcher]) {
-      this.matcherCache[matcher] = new RegExp(matcher);
-    }
-    return this.matcherCache[matcher].test(url);
-  }
-
+  
   traceLink(traceId, requestUrl) {
-    const url = this.state.zipkinUrls.find(url =>
-      this.matches(requestUrl, url.instrumented)
-    );
+    const url = matchUrl(requestUrl, this.state.zipkinUrls);
     if (url == null) {
       return null;
     } else {
