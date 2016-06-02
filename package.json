@@ -5,6 +5,7 @@
   "scripts": {
     "dev-chrome": "node node_modules/gulp/bin/gulp.js chrome",
     "dev-firefox": "node node_modules/gulp/bin/gulp.js firefox",
+    "test": "node node_modules/gulp/bin/gulp.js test:unit",
     "build": "node node_modules/gulp/bin/gulp.js"
   },
   "author": "OpenZipkin",

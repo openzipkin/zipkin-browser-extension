@@ -30,7 +30,7 @@ export default class ZipkinPanel extends Component {
       });
     }
   }
-  
+
   traceLink(traceId, requestUrl) {
     const url = matchUrl(requestUrl, this.state.zipkinUrls);
     if (url == null) {
