@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/openzipkin/zipkin-browser-extension.svg?branch=master)](https://travis-ci.org/openzipkin/zipkin-browser-extension)
+
 # Zipkin Chrome Extension
 
 This is an extension to the Chrome browser that lets you trigger trace generation when using your application.
