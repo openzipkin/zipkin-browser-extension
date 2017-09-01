@@ -81,7 +81,7 @@ export default class ZipkinUI extends Component {
               <th style={alignLeft}>URL</th>
               <th style={alignLeft}>Status</th>
               <th style={alignLeft}>Instrumented sites</th>
-              <th></th>
+              <th />
             </tr>
           </thead>
           <tbody>
