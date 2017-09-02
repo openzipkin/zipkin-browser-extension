@@ -16,4 +16,4 @@ const storage = new PluginStorage(chrome.storage);
 const storageServer = new RemoteStorageServer(pubsub, storage);
 const remoteSetInterval = new RemoteSetIntervalServer(pubsub, window.setInterval, window.clearInterval);
 
-render(<ZipkinPanel pubsub={pubsub} />, document.getElementById('content'));
+render(<ZipkinPanel pubsub={pubsub} themeName={chrome.devtools.panels.themeName} />, document.getElementById('content'));

@@ -46,13 +46,17 @@ export default class ZipkinPanel extends Component {
   }
 
   render() {
+    const darkTheme = this.props.themeName === 'dark';
+    const textColor = darkTheme ? '#a5a5a5' : '#000';
+    const linkColor = darkTheme ? '#66ccff' : undefined;
+
     const alignLeft = {textAlign: 'left', verticalAlign: 'top'};
     return (
-      <div className="container">
+      <div className="container" style={{ color: textColor }}>
         <div className="row">
           <div className="col-md-12">
             <h2>Zipkin traces</h2>
-            <ZipkinUI pubsub={this.props.pubsub} />
+            <ZipkinUI pubsub={this.props.pubsub} darkTheme={darkTheme} />
             <table>
               <thead>
               <tr>
@@ -63,7 +67,11 @@ export default class ZipkinPanel extends Component {
               <tbody>
               {this.state.requests.length > 0 ? this.state.requests.map(request => (
                   <tr key={request.traceId}>
-                    <td style={alignLeft}><a target="blank" href={this.traceLink(request.traceId, request.url)}>{request.traceId}</a></td>
+                    <td style={alignLeft}>
+                      <a target="blank" style={{color: linkColor}} href={this.traceLink(request.traceId, request.url)}>
+                        {request.traceId}
+                      </a>
+                    </td>
                     <td style={alignLeft}>{request.url}</td>
                   </tr>
                 )
