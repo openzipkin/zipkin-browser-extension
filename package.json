@@ -9,7 +9,8 @@
     "build": "gulp"
   },
   "author": "OpenZipkin",
-  "license": "Apache 2",
+  "license": "Apache-2.0",
+  "repository": "openzipkin/zipkin-browser-extension",
   "devDependencies": {
     "babel-core": "^6.7.4",
     "babel-loader": "^7.1.2",
