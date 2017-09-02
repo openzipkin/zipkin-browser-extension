@@ -1,12 +1,12 @@
 import Pubsub from '../js/Pubsub';
 
 export default class ExtensionToPanelPubsub extends Pubsub {
-  constructor(chromeRuntime) {
+  constructor(browserRuntime) {
     super();
     const setupConnection = () => {
       this.connectionPromise = new Promise((resolve, reject) => {
         console.log('setting up connection to panel');
-        chromeRuntime.onConnect.addListener(devToolsConnection => {
+        browserRuntime.onConnect.addListener(devToolsConnection => {
           console.log('connection to panel established!');
           const devToolsListener = (request, sender, sendResponse) => {
             console.log('extension received message ' + request.type, request.message);

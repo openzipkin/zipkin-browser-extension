@@ -1,8 +1,8 @@
 export default class PluginStorage {
-  constructor(chromeStorage) {
-    this.chromeStorage = chromeStorage;
+  constructor(browserStorage) {
+    this.browserStorage = browserStorage;
     this.listeners = {};
-    this.chromeStorage.onChanged.addListener((changes, namespace) => {
+    this.browserStorage.onChanged.addListener((changes, namespace) => {
       for (let key in changes) {
         if (this.listeners[key]) {
           this.listeners[key].forEach(listener => listener(changes[key].newValue));
@@ -11,24 +11,21 @@ export default class PluginStorage {
     });
   }
 
-  get(key, defaultValue = undefined) {
-    return new Promise((resolve, reject) => {
-        console.log('chrome sync getting', key);
-        return this.chromeStorage.sync.get(key, data => {
-          console.log('chrome sync got', data);
-          return resolve(data[key] !== undefined ? data[key] : defaultValue);
-        });
-      }
-    );
+  async get(key, defaultValue = undefined) {
+    console.log('sync getting', key);
+
+    const data = await this.browserStorage.sync.get(key);
+    console.log('sync got', data);
+
+    return data[key] !== undefined ? data[key] : defaultValue;
   }
 
   set(key, value) {
-    console.log('chrome sync ZETting', value);
+    console.log('sync ZETting', value);
     const data = {};
     data[key] = value;
-    return new Promise((resolve, reject) =>
-      this.chromeStorage.sync.set(data, resolve)
-    );
+
+    return this.browserStorage.sync.set(data);
   }
 
   onChange(key, listener) {

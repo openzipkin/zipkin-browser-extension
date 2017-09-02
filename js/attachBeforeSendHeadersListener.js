@@ -10,7 +10,7 @@ const filter = {
 };
 
 export default function attachBeforeSendHeadersListener(webRequest) {
-  webRequest.onBeforeSendHeaders.addListener(details => {
+  webRequest.onBeforeSendHeaders.addListener(({requestHeaders = []}) => {
     const traceId = generateZipkinTraceId();
     const zipkinHeaders = {
       'X-Zipkin-Extension': '1',
@@ -24,11 +24,8 @@ export default function attachBeforeSendHeadersListener(webRequest) {
 
     return {
       requestHeaders: [
-        ...(details.requestHeaders || []),
-        ...Object.keys(zipkinHeaders).map(key => ({
-          name: key,
-          value: zipkinHeaders[key]
-        }))
+        ...requestHeaders,
+        ...Object.entries(zipkinHeaders).map(([name, value]) => ({ name, value }))
       ]
     };
   }, filter, ['blocking', 'requestHeaders']);

@@ -1,9 +1,5 @@
-import PluginStorage from './PluginStorage';
-import {RemoteStorageServer} from './RemoteStorage';
-
-const panel = chrome.devtools.panels.create('Zipkin',
-  'zipkin.png',
-  'panel.html',
-  panel => {
-  }
+browser.devtools.panels.create(
+  'Zipkin',
+  'icon64.png',
+  'panel.html'
 );

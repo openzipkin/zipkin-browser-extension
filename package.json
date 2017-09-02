@@ -27,6 +27,7 @@
     "jest": "^20.0.4",
     "node-fetch": "^1.5.1",
     "rimraf": "^2.6.1",
+    "webextension-polyfill": "^0.1.1",
     "webpack": "^3.5.5",
     "zip-webpack-plugin": "^2.0.0"
   },
