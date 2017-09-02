@@ -43,7 +43,16 @@ export default class ZipkinPlugin {
     this.storage.set('zipkinUrls', this.zipkinUrls.map(z => ({url: z.url})));
   }
 
-  addZipkinUrl(url, saveToStorage = true) {
+  async addZipkinUrl(url, saveToStorage = true) {
+    const fetchUrl = await fetch(url);
+
+    // Never actually download the body
+    await fetchUrl.body.cancel();
+
+    if (fetchUrl.redirected) {
+      url = `${url}/zipkin`
+    }
+
     this.zipkinUrls.push({
       url,
       statusCheck: this.makeZipkinCheckInterval(url)
