@@ -9,9 +9,6 @@ module.exports = {
   },
   target: 'web',
   context: __dirname,
-  resolve: {
-    modulesDirectories: ['node_modules']
-  },
   output: {
     // path: __dirname + '/build/chrome',
     filename: '[name].bundle.js'
@@ -19,7 +16,7 @@ module.exports = {
   module: {
     loaders: [{
       test: /\.js$/,
-      loader: 'babel',
+      loader: 'babel-loader',
       exclude: ['node_modules']
     }]
   },
