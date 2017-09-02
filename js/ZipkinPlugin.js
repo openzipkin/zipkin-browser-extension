@@ -41,7 +41,12 @@ export default class ZipkinPlugin {
   }
 
   saveZipkinUrls() {
-    return this.storage.set('zipkinUrls', this.zipkinUrls.map(z => ({ url: z.url })));
+    return this.storage.set('zipkinUrls',
+      this.zipkinUrls
+        .map(url => new URL(url.url))
+        // Don't save the path part of the URL
+        .map(url => ({ url: url.origin }))
+    );
   }
 
   async addZipkinUrl(url, saveToStorage = true) {
