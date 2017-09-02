@@ -27,7 +27,7 @@ module.exports = {
   plugins: [
     new ChromeDevPlugin(),
     new CopyWebpackPlugin([
-      { context: path.join(__dirname, 'vendor'), from: '*.html' },
+      { context: path.join(__dirname, 'html'), from: '*' },
       { context: path.join(__dirname, 'img'), from: '*' },
       { from: require.resolve('webextension-polyfill') },
     ]),
