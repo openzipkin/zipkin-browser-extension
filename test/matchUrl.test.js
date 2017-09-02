@@ -1,4 +1,4 @@
-const matchUrl = require('../js/matchUrl');
+import matchUrl from '../js/matchUrl';
 
 describe('urlMatcher', () => {
   it('should return null when no match is found', () => {

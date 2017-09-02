@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React from 'react';
 import {render} from 'react-dom';
 import ZipkinPanel from '../../js/ZipkinPanel';
 import PanelToExtensionPubsub from './PanelToExtensionPubsub';
@@ -16,4 +16,4 @@ const storage = new PluginStorage(chrome.storage);
 const storageServer = new RemoteStorageServer(pubsub, storage);
 const remoteSetInterval = new RemoteSetIntervalServer(pubsub, window.setInterval, window.clearInterval);
 
-render(<ZipkinPanel pubsub={pubsub} />, document.getElementById('content'));
+render(<ZipkinPanel pubsub={pubsub} themeName={chrome.devtools.panels.themeName} />, document.getElementById('content'));

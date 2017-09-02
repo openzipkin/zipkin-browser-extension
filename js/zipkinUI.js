@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
 import url from 'url';
 
 export default class ZipkinUI extends Component {
@@ -60,6 +60,9 @@ export default class ZipkinUI extends Component {
   render() {
     const hasZipkinUrls = this.state.zipkinUrls.length > 0;
     const alignLeft = {textAlign: 'left', verticalAlign: 'top'};
+    const green = this.props.darkTheme ? '#00e600' : '#009900';
+    const red = this.props.darkTheme ? '#e60000' : '#990000';
+
     return (
       <div style={{width: '400px'}}>
         <div>
@@ -87,7 +90,7 @@ export default class ZipkinUI extends Component {
           <tbody>
           {this.state.zipkinUrls.map(url => {
             const status = url.status === 'up' ? "✓" : (url.status || 'unknown status');
-            const color = url.status === 'up' ? '#009900' : '#990000';
+            const color = url.status === 'up' ? green : red;
             return (
               <tr key={url.url}>
                 <td style={{...alignLeft, color}}>{url.url}</td>
