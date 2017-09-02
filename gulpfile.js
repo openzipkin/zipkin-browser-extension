@@ -1,6 +1,6 @@
 const fs = require('fs');
 const gulp = require('gulp');
-const mocha = require('gulp-mocha');
+const jest = require('gulp-jest').default;
 const mustache = require("gulp-mustache");
 const clean = require('gulp-clean');
 const rename = require("gulp-rename");
@@ -14,7 +14,7 @@ const version = fs.readFileSync('VERSION', 'utf-8').trim();
 
 gulp.task('clean', () => gulp.src(['build', 'dist'], {read: false}).pipe(clean()));
 
-gulp.task('test:unit', () => gulp.src('test/*', {read: false}).pipe(mocha({})));
+gulp.task('test:unit', () => gulp.src('test').pipe(jest()));
 
 // Chrome extension build
 gulp.task('chrome:webpack', () => gulp.src('vendor/chrome')
