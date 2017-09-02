@@ -5,7 +5,7 @@ export class RemoteStorageClient {
 
   get(key, defaultValue = undefined) {
     return new Promise((resolve, reject) =>
-      this.pubsub.query('remoteStorage.get', {key, defaultValue}, data => resolve(data))
+      this.pubsub.query('remoteStorage.get', {key, defaultValue}, resolve)
     );
   }
 

@@ -15,6 +15,5 @@ const plugin = new ZipkinPlugin({
   storage,
   setInterval: remoteSetInterval.setInterval,
   clearInterval: remoteSetInterval.clearInterval,
-  XMLHttpRequest
   // network: browser.devtools.network
 });
