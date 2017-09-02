@@ -1,4 +1,4 @@
-import Pubsub from '../../js/Pubsub';
+import Pubsub from '../js/Pubsub';
 
 export default class PanelToExtensionPubsub extends Pubsub {
   constructor() {
