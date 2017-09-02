@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React from 'react';
 import {render} from 'react-dom';
 import ZipkinPanel from '../../js/ZipkinPanel';
 import PanelToAddonPubsub from './PanelToAddonPubsub';
