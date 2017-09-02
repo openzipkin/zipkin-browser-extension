@@ -6,9 +6,9 @@ const ZipPlugin = require('zip-webpack-plugin');
 
 module.exports = {
   entry: {
-    background: './vendor/background.js',
-    devtools: './vendor/devtools.js',
-    panel: './vendor/panel.js',
+    background: './src/background.js',
+    devtools: './src/devtools.js',
+    panel: './src/panel.js',
   },
   output: {
     filename: '[name].bundle.js',
@@ -27,8 +27,8 @@ module.exports = {
   plugins: [
     new ChromeDevPlugin(),
     new CopyWebpackPlugin([
-      { context: path.join(__dirname, 'html'), from: '*' },
-      { context: path.join(__dirname, 'img'), from: '*' },
+      { context: path.join(__dirname, 'src/html'), from: '*' },
+      { context: path.join(__dirname, 'src/img'), from: '*' },
       { from: require.resolve('webextension-polyfill') },
     ]),
     new ZipPlugin({

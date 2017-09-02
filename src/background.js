@@ -1,16 +1,15 @@
-import ExtensionToPanelPubsub from './ExtensionToPanelPubsub';
-import { RemoteStorageClient } from './RemoteStorage';
-import { RemoteSetIntervalClient } from './RemoteSetInterval';
-import ZipkinPlugin from '../js/ZipkinPlugin';
+import ExtensionToPanelPubsub from './lib/ExtensionToPanelPubsub';
+import { RemoteStorageClient } from './lib/RemoteStorage';
+import { RemoteSetIntervalClient } from './lib/RemoteSetInterval';
+import ZipkinPlugin from './lib/ZipkinPlugin';
 
-import attachBeforeSendHeadersListener from '../js/attachBeforeSendHeadersListener';
+import attachBeforeSendHeadersListener from './lib/attachBeforeSendHeadersListener';
 
 attachBeforeSendHeadersListener(browser.webRequest);
 
 const pubsub = new ExtensionToPanelPubsub(browser.runtime);
 const storage = new RemoteStorageClient(pubsub);
 const remoteSetInterval = new RemoteSetIntervalClient(pubsub);
-
 // eslint-disable-next-line no-new
 new ZipkinPlugin({
   pubsub,

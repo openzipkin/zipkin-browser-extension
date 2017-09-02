@@ -1,11 +1,11 @@
 import React from 'react';
 import { render } from 'react-dom';
-import ZipkinPanel from '../js/ZipkinPanel';
-import PanelToExtensionPubsub from './PanelToExtensionPubsub';
-import PluginStorage from './PluginStorage';
-import { RemoteStorageServer } from './RemoteStorage';
-import addNetworkEvents from '../js/addNetworkEvents';
-import { RemoteSetIntervalServer } from './RemoteSetInterval';
+import ZipkinPanel from './lib/ZipkinPanel';
+import PanelToExtensionPubsub from './lib/PanelToExtensionPubsub';
+import PluginStorage from './lib/PluginStorage';
+import { RemoteStorageServer } from './lib/RemoteStorage';
+import addNetworkEvents from './lib/addNetworkEvents';
+import { RemoteSetIntervalServer } from './lib/RemoteSetInterval';
 
 const pubsub = new PanelToExtensionPubsub();
 addNetworkEvents(browser.devtools.network, pubsub);

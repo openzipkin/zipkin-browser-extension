@@ -7,6 +7,9 @@
     "browser": true,
     "shared-node-browser": true
   },
+  "globals": {
+    "browser": false
+  },
   "rules": {
     "react/jsx-filename-extension": "off",
     "class-methods-use-this": "off",
@@ -16,12 +19,6 @@
     "prettier/prettier": ["error", { "singleQuote": true, "trailingComma": "all" }]
   },
   "overrides": [
-    {
-      "files": "vendor/**/*",
-      "globals": {
-        "browser": false
-      }
-    },
     {
       "files": "test/**/*",
       "env": {
