@@ -22,7 +22,7 @@ export default function attachBeforeSendHeadersListener(webRequest) {
       'X-B3-SpanId': traceId
     };
 
-    const modified = {
+    return {
       requestHeaders: [
         ...(details.requestHeaders || []),
         ...Object.keys(zipkinHeaders).map(key => ({
@@ -31,6 +31,5 @@ export default function attachBeforeSendHeadersListener(webRequest) {
         }))
       ]
     };
-    return modified;
   }, filter, ['blocking', 'requestHeaders']);
 }
