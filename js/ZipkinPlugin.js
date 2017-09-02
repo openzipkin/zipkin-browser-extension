@@ -1,13 +1,11 @@
-import attachBeforeSendHeadersListeners from './attachBeforeSendHeadersListener';
 import checkZipkinUI from './checkZipkinUI';
 
 export default class ZipkinPlugin {
-  constructor({pubsub, storage, setInterval, clearInterval, XMLHttpRequest /* network */}) {
+  constructor({ pubsub, storage, setInterval, clearInterval /* network */ }) {
     this.pubsub = pubsub;
     this.storage = storage;
     this.setInterval = setInterval;
     this.clearInterval = clearInterval;
-    this.XMLHttpRequest = XMLHttpRequest;
     this.zipkinUrls = [];
 
     this.pubsub.sub('zipkinUrls.load', this.loadFromStorage.bind(this));
@@ -15,15 +13,18 @@ export default class ZipkinPlugin {
     this.pubsub.sub('zipkinUrls.remove', this.removeZipkinUrl.bind(this));
   }
 
-  loadFromStorage() {
-    this.storage.get('zipkinUrls', []).then(zipkinUrls => {
-      zipkinUrls.forEach(zipkinUrl => {
-        const exists = this.zipkinUrls.find(z => z.url === zipkinUrl.url);
-        if (!exists) {
-          this.addZipkinUrl(zipkinUrl.url, false);
-        }
-      });
-    }).then(this.publishZipkinUrlStatus.bind(this));
+  async loadFromStorage() {
+    const zipkinUrls = await this.storage.get('zipkinUrls', []);
+
+    await Promise.all(zipkinUrls.map(zipkinUrl => {
+      const exists = this.zipkinUrls.find(z => z.url === zipkinUrl.url);
+      if (!exists) {
+        return this.addZipkinUrl(zipkinUrl.url, false);
+      }
+    })
+      .filter(Boolean));
+
+    this.publishZipkinUrlStatus();
   }
 
   publishZipkinUrlStatus() {
@@ -40,7 +41,7 @@ export default class ZipkinPlugin {
   }
 
   saveZipkinUrls() {
-    this.storage.set('zipkinUrls', this.zipkinUrls.map(z => ({url: z.url})));
+    return this.storage.set('zipkinUrls', this.zipkinUrls.map(z => ({ url: z.url })));
   }
 
   async addZipkinUrl(url, saveToStorage = true) {
@@ -75,12 +76,14 @@ export default class ZipkinPlugin {
   }
 
   makeZipkinCheckInterval(url) {
-    const poll = () => {
-      checkZipkinUI(this.XMLHttpRequest, url).then(response => {
-        this.setZipkinUIStatus(url, 'up', response.instrumented);
-      }).catch(err => {
-        this.setZipkinUIStatus(url, err.status ? err.status : 'down', []);
-      });
+    const poll = async () => {
+      try {
+        const instrumented = await checkZipkinUI(url);
+
+        this.setZipkinUIStatus(url, 'up', instrumented);
+      } catch (err) {
+        this.setZipkinUIStatus(url, err.message || 'down', []);
+      }
     };
     poll();
     return this.setInterval(poll, 30000);

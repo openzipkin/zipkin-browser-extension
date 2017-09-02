@@ -25,12 +25,11 @@ export default class ExtensionToPanelPubsub extends Pubsub {
     setupConnection();
   }
 
-  pub(topic, message = {}) {
+  async pub(topic, message = {}) {
     this.notifySubscribers(topic, message);
     console.log('publishing from extension to panel we need connection first');
-    return this.connectionPromise.then(conn => {
-      console.log('we now have connection to the panel, we can publish', {topic, message});
-      return conn.postMessage({type: topic, message});
-    });
+    const conn = await this.connectionPromise;
+    console.log('we now have connection to the panel, we can publish', { topic, message });
+    return conn.postMessage({ type: topic, message });
   }
 }
