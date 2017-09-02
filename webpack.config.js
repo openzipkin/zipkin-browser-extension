@@ -6,9 +6,9 @@ const ZipPlugin = require('zip-webpack-plugin');
 
 module.exports = {
   entry: {
-    background: require.resolve('./vendor/background.js'),
-    devtools: require.resolve('./vendor/devtools.js'),
-    panel: require.resolve('./vendor/panel.js')
+    background: './vendor/background.js',
+    devtools: './vendor/devtools.js',
+    panel: './vendor/panel.js',
   },
   output: {
     filename: '[name].bundle.js',
@@ -24,7 +24,11 @@ module.exports = {
   },
   plugins: [
     new ChromeDevPlugin(),
-    new CopyWebpackPlugin([{ context: path.join(__dirname, 'vendor'), from: '*.html' }]),
+    new CopyWebpackPlugin([
+      { context: path.join(__dirname, 'vendor'), from: '*.html' },
+      { context: path.join(__dirname, 'img'), from: '*' },
+      { from: require.resolve('webextension-polyfill') },
+    ]),
     new ZipPlugin({
       path: path.join(__dirname, 'dist'),
       filename: 'zipkin-extension.zip',

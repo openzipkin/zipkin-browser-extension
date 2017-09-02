@@ -3,8 +3,14 @@
   "name": "Zipkin Browser Extension",
   "devtools_page": "devtools.html",
   "background": {
-    "scripts": ["background.bundle.js"],
+    "scripts": [
+      "browser-polyfill.js",
+      "background.bundle.js"
+    ],
     "persistent": true
+  },
+  "icons": {
+    "48": "icon64.png"
   },
   "permissions": [
     "activeTab",

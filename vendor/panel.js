@@ -7,13 +7,11 @@ import {RemoteStorageServer} from './RemoteStorage';
 import addNetworkEvents from '../js/addNetworkEvents';
 import {RemoteSetIntervalServer} from './RemoteSetInterval';
 
-console.log('chrome.devtools.network', chrome.devtools.network);
-
 const pubsub = new PanelToExtensionPubsub();
-addNetworkEvents(chrome.devtools.network, pubsub);
+addNetworkEvents(browser.devtools.network, pubsub);
 
-const storage = new PluginStorage(chrome.storage);
+const storage = new PluginStorage(browser.storage);
 const storageServer = new RemoteStorageServer(pubsub, storage);
 const remoteSetInterval = new RemoteSetIntervalServer(pubsub, window.setInterval, window.clearInterval);
 
-render(<ZipkinPanel pubsub={pubsub} themeName={chrome.devtools.panels.themeName} />, document.getElementById('content'));
+render(<ZipkinPanel pubsub={pubsub} themeName={browser.devtools.panels.themeName} />, document.getElementById('content'));

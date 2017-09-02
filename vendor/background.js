@@ -5,9 +5,9 @@ import ZipkinPlugin from '../js/ZipkinPlugin';
 
 import attachBeforeSendHeadersListener from '../js/attachBeforeSendHeadersListener';
 
-attachBeforeSendHeadersListener(chrome.webRequest);
+attachBeforeSendHeadersListener(browser.webRequest);
 
-const pubsub = new ExtensionToPanelPubsub(chrome.runtime);
+const pubsub = new ExtensionToPanelPubsub(browser.runtime);
 const storage = new RemoteStorageClient(pubsub);
 const remoteSetInterval = new RemoteSetIntervalClient(pubsub);
 const plugin = new ZipkinPlugin({
@@ -16,5 +16,5 @@ const plugin = new ZipkinPlugin({
   setInterval: remoteSetInterval.setInterval,
   clearInterval: remoteSetInterval.clearInterval,
   XMLHttpRequest
-  // network: chrome.devtools.network
+  // network: browser.devtools.network
 });

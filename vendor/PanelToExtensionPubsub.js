@@ -5,7 +5,7 @@ export default class PanelToExtensionPubsub extends Pubsub {
     super();
     const connectToBackgroundPage = () => {
       console.log('Connecting to extension');
-      this.backgroundPageConnection = chrome.runtime.connect({
+      this.backgroundPageConnection = browser.runtime.connect({
         name: 'devtools-page'
       });
       console.log('connected to extension');
