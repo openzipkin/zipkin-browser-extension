@@ -1,10 +1,10 @@
 import React from 'react';
 import {render} from 'react-dom';
-import ZipkinPanel from '../../js/ZipkinPanel';
+import ZipkinPanel from '../js/ZipkinPanel';
 import PanelToExtensionPubsub from './PanelToExtensionPubsub';
 import PluginStorage from './PluginStorage';
 import {RemoteStorageServer} from './RemoteStorage';
-import addNetworkEvents from '../../js/addNetworkEvents';
+import addNetworkEvents from '../js/addNetworkEvents';
 import {RemoteSetIntervalServer} from './RemoteSetInterval';
 
 console.log('chrome.devtools.network', chrome.devtools.network);

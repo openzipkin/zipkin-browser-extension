@@ -1,9 +1,9 @@
 import ExtensionToPanelPubsub from './ExtensionToPanelPubsub';
 import {RemoteStorageClient} from './RemoteStorage';
 import {RemoteSetIntervalClient} from './RemoteSetInterval';
-import ZipkinPlugin from '../../js/ZipkinPlugin';
+import ZipkinPlugin from '../js/ZipkinPlugin';
 
-import attachBeforeSendHeadersListener from '../../js/attachBeforeSendHeadersListener';
+import attachBeforeSendHeadersListener from '../js/attachBeforeSendHeadersListener';
 
 attachBeforeSendHeadersListener(chrome.webRequest);
 

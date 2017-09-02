@@ -33,7 +33,7 @@ oauth2Client.refreshAccessToken((err, tokens) => {
     console.error('get a new token here', url);
   } else {
     if (command === 'upload') {
-      const data = fs.createReadStream('dist/chrome/zipkin-chrome-extension.zip');
+      const data = fs.createReadStream('dist/zipkin-extension.zip');
       // https://developer.chrome.com/webstore/using_webstore_api#uploadexisitng
       fetch('https://www.googleapis.com/upload/chromewebstore/v1.1/items/' + appId, {
         method: 'PUT',
