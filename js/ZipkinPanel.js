@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import minimatch from 'minimatch';
 import ZipkinUI from './zipkinUI';
 import matchUrl from './matchUrl';
 
