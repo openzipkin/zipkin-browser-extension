@@ -10,7 +10,6 @@ module.exports = function matchUrl(requestUrl, zipkinUrls) {
   const res = zipkinUrls.find(url => matches(requestUrl, url.instrumented));
   if (!res) {
     return null;
-  } else {
-    return res;
   }
+  return res;
 };

@@ -2,12 +2,12 @@ export default class PluginStorage {
   constructor(browserStorage) {
     this.browserStorage = browserStorage;
     this.listeners = {};
-    this.browserStorage.onChanged.addListener((changes, namespace) => {
-      for (let key in changes) {
-        if (this.listeners[key]) {
-          this.listeners[key].forEach(listener => listener(changes[key].newValue));
-        }
-      }
+    this.browserStorage.onChanged.addListener(changes => {
+      Object.entries(changes)
+        .filter(([key]) => this.listeners[key])
+        .forEach(([key, value]) => {
+          this.listeners[key].forEach(listener => listener(value.newValue));
+        });
     });
   }
 

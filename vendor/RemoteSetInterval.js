@@ -1,7 +1,7 @@
 export function RemoteSetIntervalClient(pubsub) {
-  let intervalId = 0;
+  let internalIntervalId = 0;
   const callbacks = [];
-  pubsub.sub('setInterval.response', ({intervalId}) => {
+  pubsub.sub('setInterval.response', ({ intervalId }) => {
     console.log('Client: received setInterval poll', intervalId);
     if (callbacks[intervalId]) {
       callbacks[intervalId].call();
@@ -9,25 +9,28 @@ export function RemoteSetIntervalClient(pubsub) {
   });
 
   function setInterval(callback, interval) {
-    console.log('Client: Now setting up remote setInterval', intervalId);
+    console.log(
+      'Client: Now setting up remote setInterval',
+      internalIntervalId,
+    );
     pubsub.pub('setInterval.request', {
-      intervalId,
-      interval
+      intervalId: internalIntervalId,
+      interval,
     });
-    callbacks[intervalId] = callback;
-    intervalId++;
+    callbacks[internalIntervalId] = callback;
+    internalIntervalId++;
   }
   function clearInterval(callback) {
     const intervalId = callbacks.indexOf(callback);
     if (intervalId !== -1) {
-      pubsub.pub('setInterval.clear', {intervalId});
+      pubsub.pub('setInterval.clear', { intervalId });
       delete callbacks[intervalId];
     }
   }
 
   return {
     setInterval,
-    clearInterval
+    clearInterval,
   };
 }
 
@@ -36,16 +39,16 @@ export function RemoteSetIntervalServer(pubsub, setInterval, clearInterval) {
 
   function makeResponder(intervalId) {
     console.log('Server: sending setInterval poll', intervalId);
-    return () => pubsub.pub('setInterval.response', ({intervalId}));
+    return () => pubsub.pub('setInterval.response', { intervalId });
   }
 
-  pubsub.sub('setInterval.request', ({intervalId, interval}) => {
+  pubsub.sub('setInterval.request', ({ intervalId, interval }) => {
     console.log('Server: Received request for setInterval', intervalId);
     responders[intervalId] = makeResponder(intervalId);
     setInterval(responders[intervalId], interval);
   });
 
-  pubsub.sub('setInterval.clear', ({intervalId}) => {
+  pubsub.sub('setInterval.clear', ({ intervalId }) => {
     clearInterval(responders[intervalId]);
     delete responders[intervalId];
   });

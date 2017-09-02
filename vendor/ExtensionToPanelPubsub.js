@@ -4,12 +4,15 @@ export default class ExtensionToPanelPubsub extends Pubsub {
   constructor(browserRuntime) {
     super();
     const setupConnection = () => {
-      this.connectionPromise = new Promise((resolve, reject) => {
+      this.connectionPromise = new Promise(resolve => {
         console.log('setting up connection to panel');
         browserRuntime.onConnect.addListener(devToolsConnection => {
           console.log('connection to panel established!');
-          const devToolsListener = (request, sender, sendResponse) => {
-            console.log('extension received message ' + request.type, request.message);
+          const devToolsListener = request => {
+            console.log(
+              `extension received message ${request.type}`,
+              request.message,
+            );
             this.notifySubscribers(request.type, request.message);
           };
           devToolsConnection.onMessage.addListener(devToolsListener);
@@ -29,7 +32,10 @@ export default class ExtensionToPanelPubsub extends Pubsub {
     this.notifySubscribers(topic, message);
     console.log('publishing from extension to panel we need connection first');
     const conn = await this.connectionPromise;
-    console.log('we now have connection to the panel, we can publish', { topic, message });
+    console.log('we now have connection to the panel, we can publish', {
+      topic,
+      message,
+    });
     return conn.postMessage({ type: topic, message });
   }
 }
