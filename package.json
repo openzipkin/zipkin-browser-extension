@@ -5,6 +5,7 @@
   "scripts": {
     "clean": "rimraf build/ dist/",
     "dev": "npm run clean && webpack",
+    "dev:firefox": "npm run dev && web-ext run --source-dir ./build",
     "test": "jest",
     "build": "npm test && npm run dev"
   },
@@ -27,6 +28,7 @@
     "jest": "^20.0.4",
     "node-fetch": "^1.5.1",
     "rimraf": "^2.6.1",
+    "web-ext": "^2.0.0",
     "webextension-polyfill": "^0.1.1",
     "webpack": "^3.5.5",
     "zip-webpack-plugin": "^2.0.0"

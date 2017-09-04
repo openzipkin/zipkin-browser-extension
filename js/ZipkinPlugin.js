@@ -53,8 +53,10 @@ export default class ZipkinPlugin {
     // Fetch the endpoint to check if we get redirected
     const fetchUrl = await fetch(url);
 
-    // Never actually download the body
-    await fetchUrl.body.cancel();
+    if (fetchUrl.body) {
+      // Never actually download the body
+      await fetchUrl.body.cancel();
+    }
 
     if (fetchUrl.redirected && fetchUrl.url === `${url}/zipkin/`) {
       url = `${url}/zipkin`
