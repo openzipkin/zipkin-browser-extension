@@ -1,0 +1,32 @@
+{
+  "root": true,
+  "parser": "babel-eslint",
+  "extends": ["airbnb", "prettier"],
+  "plugins": ["prettier"],
+  "env": {
+    "browser": true,
+    "shared-node-browser": true
+  },
+  "rules": {
+    "react/jsx-filename-extension": "off",
+    "class-methods-use-this": "off",
+    "no-plusplus": "off",
+    "no-alert": "off",
+    "no-console": "off",
+    "prettier/prettier": ["error", { "singleQuote": true, "trailingComma": "all" }]
+  },
+  "overrides": [
+    {
+      "files": "vendor/**/*",
+      "globals": {
+        "browser": false
+      }
+    },
+    {
+      "files": "test/**/*",
+      "env": {
+        "jest": true
+      }
+    }
+  ]
+}

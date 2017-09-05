@@ -1,5 +1,5 @@
 export default async function checkZipkinUI(url) {
-  const fetchUrl = url + '/config.json';
+  const fetchUrl = `${url}/config.json`;
 
   // Used to identity calls originating from within the plugin itself
   const res = await fetch(fetchUrl, { headers: { 'X-Zipkin-Extension': '1' } });

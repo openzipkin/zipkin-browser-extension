@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 function consoleDebug(msg) {
   // This can be uncommented for more debugging
   // console.log(msg);
@@ -10,30 +11,33 @@ export default class Pubsub {
   }
 
   query(topic, message, callback) {
-    consoleDebug('query for '+topic, message);
+    consoleDebug(`query for ${topic}`, message);
     const currentQueryId = this.queryId;
     const cb = reply => {
       if (reply.queryId === currentQueryId) {
-        consoleDebug('got reply for '+topic, reply);
+        consoleDebug(`got reply for ${topic}`, reply);
         this.unsub(cb);
         callback(reply.response);
       }
     };
-    this.sub(topic+'.response', cb);
-    this.pub(topic+'.request', {
+    this.sub(`${topic}.response`, cb);
+    this.pub(`${topic}.request`, {
       queryId: currentQueryId,
-      query: message
+      query: message,
     });
     this.queryId++;
   }
 
   serve(topic, handler) {
-    consoleDebug('set up server for '+topic);
-    this.sub(topic+'.request', ({queryId, query}) => {
-      consoleDebug('received request for '+topic+ '(id='+queryId+')', query);
+    consoleDebug(`set up server for ${topic}`);
+    this.sub(`${topic}.request`, ({ queryId, query }) => {
+      consoleDebug(`received request for ${topic}(id=${queryId})`, query);
       handler(query, response => {
-        consoleDebug('the handler for '+topic+' was finished, responding with', response);
-        this.pub(topic+'.response', {queryId, response});
+        consoleDebug(
+          `the handler for ${topic} was finished, responding with`,
+          response,
+        );
+        this.pub(`${topic}.response`, { queryId, response });
       });
     });
   }
@@ -43,7 +47,7 @@ export default class Pubsub {
 
   notifySubscribers(topic, message) {
     if (this.handlers[topic]) {
-      consoleDebug('notifying subscriber for '+topic, message);
+      consoleDebug(`notifying subscriber for ${topic}`, message);
       this.handlers[topic].forEach(listener => listener(message));
     }
   }

@@ -16,13 +16,18 @@ export default class ZipkinPlugin {
   async loadFromStorage() {
     const zipkinUrls = await this.storage.get('zipkinUrls', []);
 
-    await Promise.all(zipkinUrls.map(zipkinUrl => {
-      const exists = this.zipkinUrls.find(z => z.url === zipkinUrl.url);
-      if (!exists) {
-        return this.addZipkinUrl(zipkinUrl.url, false);
-      }
-    })
-      .filter(Boolean));
+    await Promise.all(
+      zipkinUrls
+        .map(zipkinUrl => {
+          const exists = this.zipkinUrls.find(z => z.url === zipkinUrl.url);
+          if (!exists) {
+            return this.addZipkinUrl(zipkinUrl.url, false);
+          }
+
+          return undefined;
+        })
+        .filter(Boolean),
+    );
 
     this.publishZipkinUrlStatus();
   }
@@ -32,7 +37,7 @@ export default class ZipkinPlugin {
   }
 
   setZipkinUIStatus(url, status, instrumented) {
-    const zipkinUrl = this.zipkinUrls.find(zipkinUrl => zipkinUrl.url === url);
+    const zipkinUrl = this.zipkinUrls.find(e => e.url === url);
     if (zipkinUrl) {
       zipkinUrl.status = status;
       zipkinUrl.instrumented = instrumented;
@@ -41,30 +46,34 @@ export default class ZipkinPlugin {
   }
 
   saveZipkinUrls() {
-    return this.storage.set('zipkinUrls',
+    return this.storage.set(
+      'zipkinUrls',
       this.zipkinUrls
         .map(url => new URL(url.url))
         // Don't save the path part of the URL
-        .map(url => ({ url: url.origin }))
+        .map(url => ({ url: url.origin })),
     );
   }
 
-  async addZipkinUrl(url, saveToStorage = true) {
+  async addZipkinUrl(inputUrl, saveToStorage = true) {
     // Fetch the endpoint to check if we get redirected
-    const fetchUrl = await fetch(url);
+    const fetchUrl = await fetch(inputUrl);
 
     if (fetchUrl.body) {
       // Never actually download the body
       await fetchUrl.body.cancel();
     }
 
-    if (fetchUrl.redirected && fetchUrl.url === `${url}/zipkin/`) {
-      url = `${url}/zipkin`
+    let url;
+    if (fetchUrl.redirected && fetchUrl.url === `${inputUrl}/zipkin/`) {
+      url = `${inputUrl}/zipkin`;
+    } else {
+      url = inputUrl;
     }
 
     this.zipkinUrls.push({
       url,
-      statusCheck: this.makeZipkinCheckInterval(url)
+      statusCheck: this.makeZipkinCheckInterval(url),
     });
     this.publishZipkinUrlStatus();
     if (saveToStorage) {
@@ -73,7 +82,7 @@ export default class ZipkinPlugin {
   }
 
   removeZipkinUrl(url) {
-    const zipkinUrl = this.zipkinUrls.find(zipkinUrl => zipkinUrl.url === url);
+    const zipkinUrl = this.zipkinUrls.find(e => e.url === url);
     if (zipkinUrl) {
       this.clearInterval(zipkinUrl.statusCheck);
       this.zipkinUrls.splice(this.zipkinUrls.indexOf(zipkinUrl), 1);

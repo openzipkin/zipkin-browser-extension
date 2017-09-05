@@ -16,11 +16,13 @@ module.exports = {
   },
   context: __dirname,
   module: {
-    loaders: [{
-      test: /\.js$/,
-      loader: 'babel-loader',
-      exclude: ['node_modules']
-    }]
+    loaders: [
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        exclude: ['node_modules'],
+      },
+    ],
   },
   plugins: [
     new ChromeDevPlugin(),
@@ -35,8 +37,8 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       'process.env': {
-        'NODE_ENV': '"dev"'
-      }
+        NODE_ENV: '"dev"',
+      },
     }),
   ],
 };

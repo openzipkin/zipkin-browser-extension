@@ -10,14 +10,17 @@ app.set('json spaces', 2);
 
 app.get('/config.json', (req, res) => {
   res.json({
-    instrumented: '\\/\\/example\\.com\\/'
+    instrumented: '\\/\\/example\\.com\\/',
   });
 });
 app.get('*', (req, res) => {
   console.log('req', req.headers);
   res.header('Access-Control-Allow-Origin', '*');
-  res.header("Access-Control-Allow-Headers", "Cache-Control, Pragma, Origin, Authorization, Content-Type, X-Requested-With");
-  res.header("Access-Control-Allow-Methods", "GET, PUT, POST");
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Cache-Control, Pragma, Origin, Authorization, Content-Type, X-Requested-With',
+  );
+  res.header('Access-Control-Allow-Methods', 'GET, PUT, POST');
   console.log('res', res.headers);
   res.json(req.headers);
 });
