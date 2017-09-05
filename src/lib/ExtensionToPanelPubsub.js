@@ -1,4 +1,4 @@
-import Pubsub from '../js/Pubsub';
+import Pubsub from './Pubsub';
 
 export default class ExtensionToPanelPubsub extends Pubsub {
   constructor(browserRuntime) {
